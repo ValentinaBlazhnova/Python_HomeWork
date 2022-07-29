@@ -1,0 +1,70 @@
+# Напишите программу, удаляющую из текста все слова, содержащие ""абв"".
+
+str_list = 'Привет, мир! Мы очеабвнь любим Пайтомаабвба! Семинары'
+
+def strs(str):
+    for item in str_list:
+        if 'абв' in item:
+            str_list.remove(item)
+    print(str_list)
+
+res = list(filter(lambda item: 'абв' not in item, str_list.split())) #Другой способ написания кода
+print(res)
+
+; Создайте программу для игры с конфетами человек против человека.
+; Условие задачи: На столе лежит 2021 конфета.
+;  Играют два игрока делая ход друг после друга. Первый ход определяется жеребьёвкой.
+;  За один ход можно забрать не более чем 28 конфет. Все конфеты оппонента достаются сделавшему последний ход. 
+;  Сколько конфет нужно взять первому игроку, чтобы забрать все конфеты у своего конкурента?
+; a) Добавьте игру против бота
+; b) Подумайте как наделить бота ""интеллектом""
+
+def play_game(kolichestvo, players, kolichestvo_candies):
+    count = 0 
+    while kolichestvo > 0:
+        print(f'{players[count%2]}, Ваш ход, сколько конфет возьмете?') 
+        candy = int(input())
+        print('----------------------------------------------')
+        if candy < 0 or candy > kolichestvo_candies or candy > kolichestvo:
+            print(f'Конфет больше {kolichestvo_candies} брать нельзя, осталось конфет: {kolichestvo} шт.!')
+        else: 
+            kolichestvo = kolichestvo - candy
+            print(f'Осталось конфет: {kolichestvo} шт.')
+            if kolichestvo > 0: print('Ход следующего игрока')
+            else: print("Game over!")
+        count +=1
+    return players[not count%2]
+
+
+player_1 = input('Введите имя первого игрока: ')
+player_2 = input('Введите имя второго игрока: ')
+
+kolichestvo = int(input('Введите количество конфет, которое лежит на столе! '))
+kolichestvo_candies = int(input('Введите количество конфет, которое можно взять за один ход! '))
+
+players = [player_1, player_2]
+
+winer = play_game(kolichestvo, players, kolichestvo_candies)
+print(f'Поздравляем!!!!! Победителем стал {winer}! Он получает все конфеты!')
+
+
+#Реализуйте RLE алгоритм: реализуйте модуль сжатия и восстановления данных.
+#Входные и выходные данные хранятся в отдельных текстовых файлах.
+#RLE алгоритм - это кодирование длин серий или кодирование повторов — алгоритм сжатия данных, заменяющий повторяющиеся символы на один символ и число его повторов.
+# Например: gggkkkll -> 3g3k2l
+
+with open('dz5_RLE_szatie.txt', 'r') as data:
+    my_file = data.read()
+    
+def rle_algoritm(data):
+    cout = 1
+    for i in range(len(data)-1):
+        if i <= len(data):
+            if data[i] == data[i + 1]:
+                cout += 1
+            else:
+                print(cout, data[i])
+                cout = 1
+    return cout, data[i]
+    
+print(rle_algoritm(my_file))

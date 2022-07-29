@@ -1,0 +1,98 @@
+; Создайте программу для игры в ""Крестики-нолики"".
+
+#ИГРА С БОТОМ (нумерация ячеек с 0)
+import random
+import os #это библиотека функций для работы с операционной системой.
+
+enemy_variations= []
+variations = []
+
+def enemy_turn():
+    while True:
+        num = random.randint(0,8)
+        if cell[num] == '':
+            cell[num] = 'O'
+            # os.system('cls' if os.name == 'nt' else 'clear')
+            print(f'{cell[0]:^5}|{cell[1]:^5}|{cell[2]:^5}')
+            print(f'-----------------')
+            print(f'{cell[3]:^5}|{cell[4]:^5}|{cell[5]:^5}')
+            print(f'-----------------')
+            print(f'{cell[6]:^5}|{cell[7]:^5}|{cell[8]:^5}')
+            lenn = len(user_turns)
+            if lenn >= 3:
+                enemy_variations = [(i, j, k) for i in user_turns for j in user_turns for k in user_turns]
+            return
+
+cell = ['' for x in range(9)]
+print(f'{cell[0]:^5}|{cell[1]:^5}|{cell[2]:^5}')
+print(f'-----------------')
+print(f'{cell[3]:^5}|{cell[4]:^5}|{cell[5]:^5}')
+print(f'-----------------')
+print(f'{cell[6]:^5}|{cell[7]:^5}|{cell[8]:^5}')
+turn = 0
+
+win_combinations = [(0,1,2),(3,4,5),(6,7,8),(0,3,6),(1,4,7),(2,5,8),(0,4,8),(2,4,6)]
+user_turns = []
+game = True
+while game:
+    while True:
+        number = int(input('Введите ячейку: '))
+        if cell[number] == '':
+            cell[number] = 'X'
+            break
+    user_turns.append(number)
+    # os.system('cls' if os.name == 'nt' else 'clear')
+    print(f'{cell[0]:^5}|{cell[1]:^5}|{cell[2]:^5}')
+    print(f'-----------------')
+    print(f'{cell[3]:^5}|{cell[4]:^5}|{cell[5]:^5}')
+    print(f'-----------------')
+    print(f'{cell[6]:^5}|{cell[7]:^5}|{cell[8]:^5}')
+    print(user_turns)
+    lenn = len(user_turns)
+    if lenn >= 3:
+        variations = [(i, j ,k) for i in user_turns for j in user_turns for k in user_turns]
+
+    for elemnt in variations:
+        if elemnt in win_combinations:
+            print('Победа')
+            game = False
+    if game: enemy_turn()
+    turn += 1
+
+# ВАРИАНТ ИГРЫ В КРЕСТИКИ-НОЛИКИ  ИГРОК ПРОТИВ ИГРОКА(нуменрация ячеек с 1)
+matrix = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+print('{}\n{}\n{}'.format(matrix[:3], matrix[3:6], matrix[6:])) #\n -переход на новую строку
+symbol1 = 'x'
+symbol2 = '0'
+
+def Stop_game(list):
+    terms1 = matrix[0] == matrix[1] == matrix[2]
+    terms2 = matrix[3] == matrix[4] == matrix[5]
+    terms3 = matrix[6] == matrix[7] == matrix[8]
+    terms4 = matrix[0] == matrix[3] == matrix[6]
+    terms5 = matrix[1] == matrix[4] == matrix[7]
+    terms6 = matrix[2] == matrix[5] == matrix[8]
+    terms7 = matrix[0] == matrix[4] == matrix[8]
+    terms8 = matrix[2] == matrix[4] == matrix[6]
+    list_new = [terms1, terms2, terms3, terms4, terms5, terms6, terms7, terms8]
+    return (any(list_new))
+
+k = 1
+while k < 9:
+    step1 = int(input('Первый игрок- играем х: введите номер ячейки '))
+    matrix[step1-1] = symbol1
+    print('{}\n{}\n{}'.format(matrix[:3], matrix[3:6], matrix[6:]))
+    k += 1
+    if k >= 4 and Stop_game(matrix) == True:
+        print('Победа первого игрока!')
+        break
+    step2 = int(input('Второй игрок- играем 0: введите номер ячейки '))
+    matrix[step2-1] = symbol2
+    print('{}\n{}\n{}'.format(matrix[:3], matrix[3:6], matrix[6:]))
+    k += 1
+    if k >= 4 and Stop_game(matrix) == True:
+        print('Победа второго игрока!')
+        break
+
+if k >= 9:
+    print('Ничья! Играем вновь! ')
